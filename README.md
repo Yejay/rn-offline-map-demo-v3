@@ -82,11 +82,6 @@ npm run android
 - Performance Optimization: Efficiently managing network requests and local file storage is crucial for a smooth user experience.
 - Error Handling: The app includes error handling to manage scenarios like failed downloads or storage issues.
 
-## Contributing
-Contributions to enhance the app are welcome. Feel free to fork the repository and submit pull requests.
-
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 
 
