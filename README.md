@@ -82,6 +82,3 @@ npm run android
 - Performance Optimization: Efficiently managing network requests and local file storage is crucial for a smooth user experience.
 - Error Handling: The app includes error handling to manage scenarios like failed downloads or storage issues.
 
-## License
-
-

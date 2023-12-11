@@ -1,11 +1,11 @@
-import React, { FC, useState, useMemo } from 'react'
-import { StyleSheet, View, Platform } from 'react-native'
-import MapView, { UrlTile, Region, MapTypes } from 'react-native-maps'
-import * as FileSystem from 'expo-file-system'
-import { Button } from '@rneui/base'
-import { AppConstants } from '../constants'
-import { DownloadSettings } from './DownloadSettings'
-import Constants from 'expo-constants'
+import React, { FC, useState, useMemo } from 'react';
+import { StyleSheet, View, Platform, Text } from 'react-native';
+import MapView, { UrlTile, Region, MapTypes } from 'react-native-maps';
+import * as FileSystem from 'expo-file-system';
+import { Button } from '@rneui/base';
+import { AppConstants } from '../constants';
+import { DownloadSettings } from './DownloadSettings';
+import Constants from 'expo-constants';
 
 const INITIALREGION: Region = {
   // latitude: 21.3280192,
@@ -16,14 +16,15 @@ const INITIALREGION: Region = {
   longitude: 8.562177244326605,
   latitudeDelta: 0.1,
   longitudeDelta: 0.1,
-}
+};
 
 // const MAP_TYPE: MapTypes = Platform.OS == 'android' ? 'none' : 'standard'
 
 export const App: FC = () => {
-  const [isOffline, setIsOffline] = useState(false)
-  const [visisbleSettings, setVisisbleSettings] = useState(false)
-  const [mapRegion, setMapRegion] = useState(INITIALREGION)
+  const [isOffline, setIsOffline] = useState(false);
+  const [visisbleSettings, setVisisbleSettings] = useState(false);
+  const [mapRegion, setMapRegion] = useState(INITIALREGION);
+  const [totalSizeInMB, setTotalSizeInMB] = useState('0');
 
   const urlTemplate = useMemo(
     () =>
@@ -31,31 +32,31 @@ export const App: FC = () => {
         ? `${AppConstants.TILE_FOLDER}/{z}/{x}/{y}.png`
         : `${AppConstants.MAP_URL}/{z}/{x}/{y}.png`,
     [isOffline]
-  )
+  );
 
   async function clearTiles() {
     try {
-      await FileSystem.deleteAsync(AppConstants.TILE_FOLDER)
-      alert('Deleted all tiles')
+      await FileSystem.deleteAsync(AppConstants.TILE_FOLDER);
+      alert('Deleted all tiles');
     } catch (error) {
-      console.warn(error)
+      console.warn(error);
     }
   }
 
   function toggleOffline() {
-    setIsOffline(!isOffline)
+    setIsOffline(!isOffline);
   }
 
   function toggeleDownloadSettings() {
-    setVisisbleSettings(!visisbleSettings)
+    setVisisbleSettings(!visisbleSettings);
   }
 
   function onDownloadComplete() {
-    setIsOffline(true)
-    setVisisbleSettings(false)
+    setIsOffline(true);
+    setVisisbleSettings(false);
   }
 
-  const toggleOfflineText = isOffline ? 'Go online' : 'Go offline'
+  const toggleOfflineText = isOffline ? 'Go online' : 'Go offline';
 
   return (
     <View style={styles.container}>
@@ -71,14 +72,20 @@ export const App: FC = () => {
         <Button raised title={'Download'} onPress={toggeleDownloadSettings} />
         <Button raised title={'Clear tiles'} onPress={clearTiles} />
         <Button raised title={toggleOfflineText} onPress={toggleOffline} />
+        <Button>Total size: {totalSizeInMB} MB</Button>
       </View>
 
       {visisbleSettings && (
-        <DownloadSettings mapRegion={mapRegion} onFinish={onDownloadComplete} />
+        <DownloadSettings
+          mapRegion={mapRegion}
+          onFinish={onDownloadComplete}
+          totalSizeInMB={totalSizeInMB}
+          setTotalSizeInMB={setTotalSizeInMB}
+        />
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   actionContainer: {
@@ -99,4 +106,4 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-})
+});
